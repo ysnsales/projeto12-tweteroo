@@ -37,7 +37,7 @@ app.get(`/tweets`, (req, res) => {
 app.post(`/sign-up`, (req, res) => {
     const {username, avatar} = req.body;
 
-    if (!username || !avatar || typeof username != string || typeof avatar != string) {
+    if (!username || !avatar || !isNaN(username) || !isNaN(avatar)) {
         res.status(400).send("Todos os campos são obrigatórios");
         return 
     };
@@ -50,7 +50,7 @@ app.post(`/sign-up`, (req, res) => {
 app.post(`/tweets`, (req, res) => {
     const {username, tweet} = req.body;
 
-    if (!username || !tweet || typeof username != string || typeof tweet != string) {
+    if (!username || !tweet || !isNaN(username) || !isNaN(tweet)) {
         es.status(400).send("Todos os campos são obrigatórios");
         return
     }
