@@ -13,6 +13,7 @@ app.use(express.json())
 const tweets = [];
 const users = [];
 
+
 app.get(`/tweets`, (req, res) => {
     if (tweets.length === 0){
         res.send([])
@@ -34,6 +35,7 @@ app.get(`/tweets`, (req, res) => {
     res.send(showTweets);
 });
 
+
 app.post(`/sign-up`, (req, res) => {
     const {username, avatar} = req.body;
 
@@ -51,9 +53,10 @@ app.post(`/tweets`, (req, res) => {
     const {username, tweet} = req.body;
 
     if (!username || !tweet || !isNaN(username) || !isNaN(tweet)) {
-        es.status(400).send("Todos os campos são obrigatórios");
+        res.status(400).send("Todos os campos são obrigatórios");
         return
     }
+    
     const newTweet = {username, tweet};
 
 	const user = users.find((u) => u.username === username);
