@@ -14,13 +14,19 @@ const tweets = [];
 const users = [];
 
 app.get(`/tweets`, (req, res) => {
- 
     if (tweets.length === 0){
         res.send([])
+        
     }
-    else{
-    res.send(tweets)
-    }
+    const getTweets = tweets.slice(-10);
+    const showTweets = getTweets.map(tweet => {
+        const user = users.find(user => user.username === tweet.username);
+        return {
+            ...tweet,
+            avatar : user.avatar
+        }
+    })
+    res.send(showTweets);
 });
 
 app.post(`/sign-up`, (req, res) => {
