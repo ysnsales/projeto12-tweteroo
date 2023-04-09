@@ -11,9 +11,10 @@ app.use(cors());
 app.use(express.json())
 
 const tweets = [];
-const user = [];
+const users = [];
 
 app.get(`/tweets`, (req, res) => {
+ 
     if (tweets.length === 0){
         res.send([])
     }
@@ -25,6 +26,19 @@ app.get(`/tweets`, (req, res) => {
 app.post(`/sign-up`, (req, res) => {
     const {username, avatar} = req.body
     const newUser = {username, avatar}
-    user.push(newUser);
+    users.push(newUser);
     res.send("OK");
-})
+});
+
+app.post(`/tweets`, (req, res) => {
+    const {username, tweet} = req.body
+    const newTweet = {username, tweet}
+
+	const user = users.find((u) => u.username === username);
+    if (user){
+        tweets.push(newTweet);
+        res.send("OK");
+    }else{
+        res.send("UNAUTHORIZED");
+    }
+});
