@@ -69,21 +69,24 @@ app.post(`/tweets`, (req, res) => {
 app.get(`/tweets/:USERNAME`, (req, res) => {
     const {USERNAME} = req.params;
 
-    const showTweets = tweets.map(tweet => {
-        const user = users.find(user => user.username === USERNAME);
+    const userTweets = tweets.filter(tweet => tweet.username === USERNAME);
+
+    if (userTweets.length === 0) {
+        res.status(200).send([]);
+        return
+    }
+
+    const showTweets = userTweets.map(tweet => {
+        const user = users.find(user => user.username === tweet.username);
         if (user){
             return (
             {...tweet, 
                     avatar: user.avatar
             }
             )
-        };
+        }
     })
-    if (showTweets.length === 0) {
-        res.status(200).send([]);
-        return;
-    }
-    res.status(200).send(showTweets);
 
+    res.status(200).send(showTweets);
 
 })
