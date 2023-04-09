@@ -17,8 +17,7 @@ const users = [];
 app.get(`/tweets`, (req, res) => {
     if (tweets.length === 0){
         res.send([])
-        return
-        
+        return  
     }
 
     const getTweets = tweets.slice(-10);
@@ -34,7 +33,6 @@ app.get(`/tweets`, (req, res) => {
     })
     res.send(showTweets);
 });
-
 
 app.post(`/sign-up`, (req, res) => {
     const {username, avatar} = req.body;
@@ -56,7 +54,7 @@ app.post(`/tweets`, (req, res) => {
         res.status(400).send("Todos os campos são obrigatórios");
         return
     }
-    
+
     const newTweet = {username, tweet};
 
 	const user = users.find((u) => u.username === username);
@@ -67,3 +65,25 @@ app.post(`/tweets`, (req, res) => {
         res.status(401).send("UNAUTHORIZED");
     }
 });
+
+app.get(`/tweets/:USERNAME`, (req, res) => {
+    const {USERNAME} = req.params;
+
+    const showTweets = tweets.map(tweet => {
+        const user = users.find(user => user.username === USERNAME);
+        if (user){
+            return (
+            {...tweet, 
+                    avatar: user.avatar
+            }
+            )
+        };
+    })
+    if (showTweets.length === 0) {
+        res.status(200).send([]);
+        return;
+    }
+    res.status(200).send(showTweets);
+
+
+})
